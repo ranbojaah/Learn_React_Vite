@@ -29,7 +29,7 @@ const FormRegister = () => {
         name='confirmPassword'
       ></InputForm>
 
-      <Button classname='bg-blue-600'>Login</Button>
+      <Button classname='bg-blue-600 w-full'>Register</Button>
     </form>
   )
 }
