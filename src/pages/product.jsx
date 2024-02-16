@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import CardProduct from '../components/Fragments/CardProduct'
 import Button from '../components/Elements/Button/index.button'
 
@@ -68,8 +68,32 @@ const ProductPage = () => {
   }
 
   const handleRemoveFromCart = (id) => {
-    setCart(cart.filter((item) => item.id !== id))
+    const updatedCart = cart.filter((item) => item.id !== id)
+    setCart(updatedCart)
+
+    if (updatedCart.length === 0) {
+      localStorage.removeItem('cart') // Hapus item 'cart' dari localStorage jika keranjang belanja kosong
+      setTotalPrice(0)
+    }
   }
+
+  // useReff
+  const cartRef = useRef(JSON.parse(localStorage.getItem('cart')) || [])
+
+  const handleAddToCartRef = (id) => {
+    cartRef.current = [...cartRef.current, { id, qty: 1 }]
+    localStorage.setItem('cart', JSON.stringify(cartRef.current))
+  }
+
+  const totalPriceRef = useRef(null)
+
+  useEffect(() => {
+    if (cart.length > 0) {
+      totalPriceRef.current.style.display = 'table-row'
+    } else {
+      totalPriceRef.current.style.display = 'none'
+    }
+  })
 
   return (
     <Fragment>
@@ -141,7 +165,7 @@ const ProductPage = () => {
                   </tr>
                 )
               })}
-              <tr>
+              <tr ref={totalPriceRef}>
                 <td colSpan={3}>
                   <b>Total Price</b>
                 </td>
