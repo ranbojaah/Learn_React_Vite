@@ -2,13 +2,14 @@ import { Fragment, useEffect, useRef, useState } from 'react'
 import CardProduct from '../components/Fragments/CardProduct'
 import Button from '../components/Elements/Button/index.button'
 import { getProdcuts } from '../service/product.service'
-
-const email = localStorage.getItem('email')
+import { getUsername } from '../service/auth.service'
+import { useLogin } from '../hooks/useLogin'
 
 const ProductPage = () => {
   const [cart, setCart] = useState([])
   const [totalPrice, setTotalPrice] = useState(0)
   const [products, setProducts] = useState([])
+  const username = useLogin()
 
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem('cart')) || [])
@@ -32,8 +33,7 @@ const ProductPage = () => {
   }, [cart, products])
 
   const handleLogout = () => {
-    localStorage.removeItem('email')
-    localStorage.removeItem('password')
+    localStorage.removeItem('token')
     window.location.href = '/login'
   }
 
@@ -80,7 +80,7 @@ const ProductPage = () => {
   return (
     <Fragment>
       <div className='flex justify-end h-20 bg-blue-600 text-white items-center px-10'>
-        {email}
+        {username}
         <Button classname='ml-5 bg-black' onClick={handleLogout}>
           Logout
         </Button>
@@ -158,7 +158,7 @@ const ProductPage = () => {
                     ${' '}
                     {totalPrice.toLocaleString('id-ID', {
                       styles: 'currency',
-                      currency: 'IDR',
+                      currency: 'USD',
                     })}
                   </b>
                 </td>
