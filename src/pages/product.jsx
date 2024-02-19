@@ -2,7 +2,6 @@ import { Fragment, useEffect, useRef, useState } from 'react'
 import CardProduct from '../components/Fragments/CardProduct'
 import Button from '../components/Elements/Button/index.button'
 import { getProdcuts } from '../service/product.service'
-import { getUsername } from '../service/auth.service'
 import { useLogin } from '../hooks/useLogin'
 
 const ProductPage = () => {
